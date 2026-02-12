@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TECHCROMA 2K26 Registration Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #5e72e4 0%, #825ee4 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header h2 {
+            font-size: 20px;
+            font-weight: 500;
+            opacity: 0.95;
+        }
+
+        .info-section {
+            background: #f7f9fc;
+            padding: 25px 30px;
+            border-bottom: 2px solid #e4e7eb;
+        }
+
+        .info-section h3 {
+            color: #5e72e4;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fee-item {
+            margin: 8px 0;
+            color: #2d3748;
+            font-size: 15px;
+        }
+
+        .highlight {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 4px solid #f59e0b;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+
+        .form-section {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .required {
+            color: #e53e3e;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #5e72e4;
+            box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.1);
+        }
+
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .radio-option,
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .radio-option:hover,
+        .checkbox-option:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        .radio-option input[type="radio"],
+        .checkbox-option input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .radio-option.selected,
+        .checkbox-option.selected {
+            background: #ebf4ff;
+            border-color: #5e72e4;
+        }
+
+        .payment-section {
+            background: #f7f9fc;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .payment-section h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .qr-code {
+            max-width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .qr-code img {
+            width: 100%;
+            height: auto;
+        }
+
+        .upi-name {
+            font-weight: 600;
+            color: #2d3748;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #5e72e4 0%, #825ee4 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(94, 114, 228, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .note {
+            color: #718096;
+            font-size: 13px;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .header h2 {
+                font-size: 18px;
+            }
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .price-calculator {
+            margin-top: 20px;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px solid #5e72e4;
+            border-radius: 12px;
+            padding: 20px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .price-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .price-row:last-child {
+            border-bottom: none;
+        }
+
+        .price-label {
+            color: #4a5568;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .price-value {
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .total-row {
+            margin-top: 8px;
+            padding-top: 15px;
+            border-top: 2px solid #5e72e4 !important;
+            border-bottom: none !important;
+        }
+
+        .total-row .price-label {
+            color: #2d3748;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .total-amount {
+            color: #5e72e4;
+            font-size: 24px;
+            font-weight: 700;
+            transition: transform 0.2s ease-out;
+        }
+
+        #priceBreakdown {
+            color: #5e72e4;
+            font-family: 'Courier New', monospace;
+        }
+.event-description {
+    background: #ffffff;
+    padding: 30px;
+    border-bottom: 2px solid #e4e7eb;
+}
+
+.event-description h2 {
+    color: #5e72e4;
+    margin-bottom: 5px;
+}
+
+.event-description p {
+    margin-bottom: 12px;
+    color: #4a5568;
+    line-height: 1.6;
+}
+
+.event-description ul {
+    padding-left: 20px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+.tech-zone {
+    color: #5e72e4;
+    font-weight: 600;
+}
+
+.fun-zone {
+    color: #f59e0b;
+    font-weight: 600;
+}
+
+.fee-box {
+    background: #fff4e6;
+    padding: 15px;
+    border-left: 4px solid #f59e0b;
+    border-radius: 6px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>TECHCROMA 2K26</h1>
+            <h2>Registration Form</h2>
+        </div>
+
+        
+        <div class="form-section">
+            <div class="success-message" id="successMessage">
+                ✓ Thank you for registering! We've received your information.
+            </div>
+<div class="event-description">
+    <h2>TECHCROMA 2K26</h2>
+    <p><strong>A National Level Technical Symposium</strong></p>
+    <p>📅 <strong>Date:</strong> 7th March 2026</p>
+
+    <p>
+        TECHCROMA 2K26 is a National Level Technical Symposium designed to provide a dynamic platform for UG and PG students to showcase their technical knowledge, creativity, and innovative thinking.
+    </p>
+
+    <p><strong>The symposium is divided into two major segments:</strong></p>
+
+    <p class="tech-zone">🔷 Tech Zone Events</p>
+    <ul>
+        <li>Paper Presentation</li>
+        <li>Poster Presentation</li>
+        <li>Code Change</li>
+        <li>Tech Quiz</li>
+    </ul>
+
+    <p class="fun-zone">🔶 Fun Zone Events</p>
+    <ul>
+        <li>Ghibli Art</li>
+        <li>Short Film</li>
+        <li>Photography</li>
+        <li>Tech Debate</li>
+    </ul>
+
+    <div class="fee-box">
+        <strong>💰 Registration Details</strong><br>
+        ₹200/- – For Single Event <br>
+        ₹100/- – For Each Additional Event <br>
+        Registration Fee Includes Lunch
+    </div>
+</div>
+
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label>Name of the student <span class="required">*</span></label>
+                    <input type="text" name="student_name" required placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label>Roll Number <span class="required">*</span></label>
+                    <input type="text" name="roll_number" required placeholder="Enter your roll number">
+                </div>
+
+                <div class="form-group">
+                    <label>College Name <span class="required">*</span></label>
+                    <input type="text" name="college_name" required placeholder="Enter your college name">
+                </div>
+
+                <div class="form-group">
+                    <label>Branch <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="branch" value="MCA" required>
+                            <span>MCA</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="branch" value="BCA" required>
+                            <span>BCA</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="branch" value="Btech" required>
+                            <span>Btech</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="branch" value="BSC" required>
+                            <span>BSC</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="branch" value="Bcom" required>
+                            <span>Bcom</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="branch" value="Other" required>
+                            <span>Other:</span>
+                            <input type="text" name="branch_other" placeholder="Specify other branch" style="flex: 1; margin-left: 10px;">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Year <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="year" value="First year" required>
+                            <span>First year</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="year" value="Second year" required>
+                            <span>Second year</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="year" value="Third year" required>
+                            <span>Third year</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="year" value="Fourth year" required>
+                            <span>Fourth year</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Mobile Number <span class="required">*</span></label>
+                    <input type="tel" name="mobile_number" required placeholder="Enter your mobile number" pattern="[0-9]{10}">
+                </div>
+
+                <div class="form-group">
+                    <label>Alternate mobile number</label>
+                    <input type="tel" name="alternate_mobile" placeholder="Enter alternate mobile number (optional)" pattern="[0-9]{10}">
+                </div>
+
+                <div class="form-group">
+                    <label>Mail-id <span class="required">*</span></label>
+                    <input type="email" name="email" required placeholder="Enter your email address">
+                </div>
+
+                <div class="form-group">
+                    <label>Tech and Fun Zone (Events) <span class="required">*</span></label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="events" value="Ghibli Art" class="event-checkbox">
+                            <span>Ghibli Art</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="events" value="Short Film" class="event-checkbox">
+                            <span>Short Film</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="events" value="Photography" class="event-checkbox">
+                            <span>Photography</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="events" value="Tech Debate" class="event-checkbox">
+                            <span>Tech Debate</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="events" value="Paper Presentation" class="event-checkbox">
+                            <span>Paper Presentation</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="events" value="Poster Presentation" class="event-checkbox">
+                            <span>Poster Presentation</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="events" value="Code Change" class="event-checkbox">
+                            <span>Code Change</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="events" value="Tech Quiz" class="event-checkbox">
+                            <span>Tech Quiz</span>
+                        </label>
+                    </div>
+                    
+                    <!-- Price Calculator Display -->
+                    <div id="priceCalculator" class="price-calculator">
+                        <div class="price-breakdown">
+                            <div class="price-row">
+                                <span class="price-label">Events Selected:</span>
+                                <span class="price-value" id="eventCount">0</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">Calculation:</span>
+                                <span class="price-value" id="priceBreakdown">Select at least one event</span>
+                            </div>
+                            <div class="price-row total-row">
+                                <span class="price-label">Total Amount to Pay:</span>
+                                <span class="price-value total-amount" id="totalAmount">₹0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-section">
+                    <h3>QR Code for Payment</h3>
+                    <p>(PhonePe, Gpay, Paytm, WhatsApp Pay)</p>
+                    <p><strong>Registration Fees:</strong></p>
+                    <p>Rs. 200/- (For Single Event)</p>
+                    <p>Rs. 100/- (For Each Additional Event)</p>
+                    <p style="margin-top: 10px;"><em>Registration Fee Includes Lunch</em></p>
+                    
+                   <div class="qr-code">
+    <img src="qrcode.jpeg" alt="Payment QR Code">
+    <p class="upi-name"></p>
+</div>
+
+
+
+                <div class="form-group">
+                    <label>UTR Number</label>
+                    <input type="text" name="utr_number" placeholder="Enter transaction UTR number " required>
+                    <p class="note">Enter the UTR/Reference number from your payment</p>
+                </div>
+
+                <div class="form-group">
+    <label>Upload your payment screenshot <span class="required">*</span></label>
+    <input type="file" name="payment_screenshot" id="paymentScreenshot" 
+           accept="image/png, image/jpeg" required>
+    <p class="note">Only JPG or PNG allowed. Max size: 2MB</p>
+</div>
+
+                <button type="submit" class="submit-btn">Submit Registration</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Price calculation function
+        function calculatePrice() {
+            const checkboxes = document.querySelectorAll('.event-checkbox:checked');
+            const count = checkboxes.length;
+            
+            let totalAmount = 0;
+            let breakdown = '';
+            
+            if (count === 0) {
+                breakdown = 'Select at least one event';
+                totalAmount = 0;
+            } else if (count === 1) {
+                breakdown = '₹200 (1st event)';
+                totalAmount = 200;
+            } else {
+                const additionalEvents = count - 1;
+                const additionalAmount = additionalEvents * 100;
+                breakdown = `₹200 (1st event) + ₹${additionalAmount} (${additionalEvents} × ₹100)`;
+                totalAmount = 200 + additionalAmount;
+            }
+            
+            // Update display
+            document.getElementById('eventCount').textContent = count;
+            document.getElementById('priceBreakdown').textContent = breakdown;
+            document.getElementById('totalAmount').textContent = '₹' + totalAmount;
+            
+            // Add animation effect
+            const totalAmountElement = document.getElementById('totalAmount');
+            totalAmountElement.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                totalAmountElement.style.transform = 'scale(1)';
+            }, 200);
+        }
+        
+        // Add event listeners to all checkboxes
+        document.querySelectorAll('.event-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', calculatePrice);
+        });
+        
+        // Initial calculation
+        calculatePrice();
+
+        // Add interactivity for radio and checkbox selections
+        document.querySelectorAll('.radio-option, .checkbox-option').forEach(option => {
+            const input = option.querySelector('input[type="radio"], input[type="checkbox"]');
+            
+            option.addEventListener('click', function(e) {
+                if (e.target.tagName !== 'INPUT') {
+                    input.click();
+                }
+            });
+
+            input.addEventListener('change', function() {
+                if (this.type === 'radio') {
+                    // Remove selected class from all radio options in the same group
+                    document.querySelectorAll(`input[name="${this.name}"]`).forEach(radio => {
+                        radio.closest('.radio-option').classList.remove('selected');
+                    });
+                }
+                
+                if (this.checked) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        });
+
+        // Form submission handler
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate at least one event is selected
+            const events = document.querySelectorAll('input[name="events"]:checked');
+            if (events.length === 0) {
+                alert('Please select at least one event from Tech and Fun Zone');
+                return;
+            }
+
+            // Collect form data
+            const formData = new FormData(this);
+            const data = {};
+            
+            // Handle regular fields
+            for (let [key, value] of formData.entries()) {
+                if (key === 'events') {
+                    if (!data[key]) data[key] = [];
+                    data[key].push(value);
+                } else {
+                    data[key] = value;
+                }
+            }
+            
+            // Add payment amount to data
+            const totalAmount = document.getElementById('totalAmount').textContent;
+            data.payment_amount = totalAmount;
+
+            // Display success message
+            document.getElementById('successMessage').classList.add('show');
+            
+            // Log the data (in a real application, this would be sent to a server)
+            fetch("https://script.google.com/macros/s/AKfycbzLHd7TGeLqrYQVrTlEPx62_RlJvwCUhU2wY51UW-H_OsOVh38u24Ix5O1tr5Nl4fOULg/exec", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+        "Content-Type": "application/json"
+    }
+})
+.then(res => res.json())
+.then(response => {
+    console.log("Success:", response);
+})
+.catch(error => {
+    console.error("Error:", error);
+});
+
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Optional: Reset form after submission
+            setTimeout(() => {
+                this.reset();
+                document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+                document.getElementById('successMessage').classList.remove('show');
+                calculatePrice(); // Reset price display
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
