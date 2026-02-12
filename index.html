@@ -680,14 +680,18 @@
             document.getElementById('successMessage').classList.add('show');
             
             // Log the data (in a real application, this would be sent to a server)
-            fetch("https://script.google.com/macros/s/AKfycbx_fQIZnIRDETt7mbnmea-BCA4LC0ZUWd8j1Hk3gccrDpSP8-1S3dLTT5kgBXGkts6s5g/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbwf3sRUeie9pKK4PgWKrVB-7MVWKdMKT8742MeSn7wDjOBnrlx5YuVbMqu0uCaP28nQcQ/exec", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+        "Content-Type": "application/json"
+    },
     body: JSON.stringify(data)
 })
 .then(res => res.json())
-.then(response => console.log(response))
-.catch(err => console.error(err));
+.then(response => {
+    console.log(response);
+})
+.catch(error => console.error(error));
 
 
 
