@@ -685,13 +685,15 @@
             document.getElementById('successMessage').classList.add('show');
             
             // Log the data (in a real application, this would be sent to a server)
-            fetch("https://script.google.com/macros/s/AKfycbzLHd7TGeLqrYQVrTlEPx62_RlJvwCUhU2wY51UW-H_OsOVh38u24Ix5O1tr5Nl4fOULg/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbwlt1A2knCHmvfe84avCmcZ7UYC5HQGX1JWk_7O3IEB5OvGrm28wCK2GbehqnNBH6KeTQ/exec", {
     method: "POST",
-    body: JSON.stringify(data),
+    mode: "no-cors",
     headers: {
         "Content-Type": "application/json"
-    }
-})
+    },
+    body: JSON.stringify(data)
+});
+
 .then(res => res.json())
 .then(response => {
     console.log("Success:", response);
