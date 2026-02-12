@@ -585,44 +585,40 @@
 
     <script>
         // Price calculation function
-        function calculatePrice() {
-            const checkboxes = document.querySelectorAll('.event-checkbox:checked');
-            const count = checkboxes.length;
-            
-            let totalAmount = 0;
-            let breakdown = '';
-            
-            if (count === 0) {
-                breakdown = 'Select at least one event';
-                totalAmount = 0;
-            } else if (count === 1) {
-                breakdown = '₹200 (1st event)';
-                totalAmount = 200;
-            } else {
-                const additionalEvents = count - 1;
-                const additionalAmount = additionalEvents * 100;
-                breakdown = `₹200 (1st event) + ₹${additionalAmount} (${additionalEvents} × ₹100)`;
-                totalAmount = 200 + additionalAmount;
-            }
-            
-            // Update display
-            document.getElementById('eventCount').textContent = count;
-            document.getElementById('priceBreakdown').textContent = breakdown;
-            document.getElementById('totalAmount').textContent = '₹' + totalAmount;
-            
-            // Add animation effect
-            const totalAmountElement = document.getElementById('totalAmount');
-            totalAmountElement.style.transform = 'scale(1.1)';
-            setTimeout(() => {
-                totalAmountElement.style.transform = 'scale(1)';
-            }, 200);
+        document.addEventListener("DOMContentLoaded", function () {
+
+    function calculatePrice() {
+        const checkboxes = document.querySelectorAll('.event-checkbox:checked');
+        const count = checkboxes.length;
+
+        let totalAmount = 0;
+        let breakdown = '';
+
+        if (count === 0) {
+            breakdown = 'Select at least one event';
+            totalAmount = 0;
+        } else if (count === 1) {
+            breakdown = '₹200 (1st event)';
+            totalAmount = 200;
+        } else {
+            const additionalEvents = count - 1;
+            const additionalAmount = additionalEvents * 100;
+            breakdown = `₹200 + ₹${additionalAmount}`;
+            totalAmount = 200 + additionalAmount;
         }
-        
-        // Add event listeners to all checkboxes
-        document.querySelectorAll('.event-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', calculatePrice);
-        });
-        
+
+        document.getElementById('eventCount').textContent = count;
+        document.getElementById('priceBreakdown').textContent = breakdown;
+        document.getElementById('totalAmount').textContent = '₹' + totalAmount;
+    }
+
+    document.querySelectorAll('.event-checkbox').forEach(cb => {
+        cb.addEventListener('change', calculatePrice);
+    });
+
+    calculatePrice();
+});
+
         // Initial calculation
         calculatePrice();
 
