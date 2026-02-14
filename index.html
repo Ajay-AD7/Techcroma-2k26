@@ -592,118 +592,107 @@
         </div>
     </div>
 
-   <script>
+  <script>
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    const form = document.getElementById('registrationForm');
-    const messageBox = document.getElementById('formMessage');
-    const submitBtn = form.querySelector('button[type="submit"]');
+    const form = document.getElementById("registrationForm");
+    const submitBtn = form.querySelector("button[type='submit']");
 
     // ---------------- PRICE CALCULATION ----------------
 
-    // ---------------- PRICE CALCULATION ----------------
+    function calculatePrice() {
 
-function calculatePrice() {
-    const checkboxes = document.querySelectorAll('.event-checkbox');
-    let count = 0;
+        const checkboxes = document.querySelectorAll(".event-checkbox");
+        let count = 0;
 
-    checkboxes.forEach(cb => {
-        if (cb.checked) count++;
-    });
+        checkboxes.forEach(function(cb) {
+            if (cb.checked) {
+                count++;
+            }
+        });
 
-    let totalAmount = 0;
-    let breakdown = '';
+        let totalAmount = 0;
+        let breakdown = "";
 
-    if (count === 0) {
-        breakdown = 'Select at least one event';
-        totalAmount = 0;
-    } 
-    else if (count === 1) {
-        breakdown = '₹200 (1st event)';
-        totalAmount = 200;
-    } 
-    else {
-        const additional = (count - 1) * 100;
-        breakdown = `₹200 + ₹${additional}`;
-        totalAmount = 200 + additional;
+        if (count === 0) {
+            breakdown = "Select at least one event";
+            totalAmount = 0;
+        } 
+        else if (count === 1) {
+            breakdown = "₹200 (1st event)";
+            totalAmount = 200;
+        } 
+        else {
+            const additional = (count - 1) * 100;
+            breakdown = "₹200 + ₹" + additional;
+            totalAmount = 200 + additional;
+        }
+
+        document.getElementById("eventCount").textContent = count;
+        document.getElementById("priceBreakdown").textContent = breakdown;
+        document.getElementById("totalAmount").textContent = "₹" + totalAmount;
     }
 
-    document.getElementById('eventCount').textContent = count;
-    document.getElementById('priceBreakdown').textContent = breakdown;
-    document.getElementById('totalAmount').textContent = '₹' + totalAmount;
-}
-
-// Attach change listener properly
-document.querySelectorAll('.event-checkbox').forEach(cb => {
-    cb.addEventListener('change', function() {
-        calculatePrice();
+    // Attach checkbox listener
+    document.querySelectorAll(".event-checkbox").forEach(function(cb) {
+        cb.addEventListener("change", calculatePrice);
     });
-});
 
-// Initial calculation on page load
-calculatePrice();
+    // Initial calculation
+    calculatePrice();
 
 
     // ---------------- FORM SUBMIT ----------------
 
-    form.addEventListener('submit', function(e) {
-    e.preventDefault();
+    form.addEventListener("submit", function(e) {
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Submitting...";
+        e.preventDefault();
 
-    messageBox.style.display = "none";
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submitting...";
 
-    const formData = new FormData(form);
-    const data = {};
+        const formData = new FormData(form);
+        const data = {};
 
-    formData.forEach((value, key) => {
-        if (data[key]) {
-            data[key] += ", " + value;
-        } else {
-            data[key] = value;
-        }
-    });
-
-    data.payment_amount = document.getElementById('totalAmount').textContent;
-
-    fetch("https://script.google.com/macros/s/AKfycby9ClrssKIWRhDBEQ41DoeKfccGIpWtaCgMLgRhSJtBU-0yGXRQiemNEP6FMzE79BM/exec", {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: new URLSearchParams(data)
-    });
-
-    setTimeout(() => {
-
-        // Scroll to top FIRST
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
+        formData.forEach(function(value, key) {
+            if (data[key]) {
+                data[key] += ", " + value;
+            } else {
+                data[key] = value;
+            }
         });
 
-        // Then show success message
-        messageBox.style.display = "block";
-        messageBox.style.background = "#d4edda";
-        messageBox.style.color = "#155724";
-        messageBox.style.border = "1px solid #c3e6cb";
-        messageBox.innerHTML = "✓ Registration Successful!";
+        data.payment_amount = document.getElementById("totalAmount").textContent;
 
-        form.reset();
-        calculatePrice();
+        fetch("https://script.google.com/macros/s/AKfycby9ClrssKIWRhDBEQ41DoeKfccGIpWtaCgMLgRhSJtBU-0yGXRQiemNEP6FMzE79BM/exec", {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: new URLSearchParams(data)
+        });
 
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Submit Registration";
+        setTimeout(function() {
 
-    }, 2500); // 2.5 seconds delay
+            alert("Registration submitted successfully!");
+
+            form.reset();
+            calculatePrice();
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Submit Registration";
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+
+        }, 2000); // 2 seconds delay
+
+    });
+
 });
 
-
 </script>
-
 
 
 </body>
