@@ -583,11 +583,9 @@
         </div>
     </div>
 
-    <script>
+   <script>
 
 document.addEventListener("DOMContentLoaded", function () {
-
-    // ---------------- PRICE CALCULATION ----------------
 
     function calculatePrice() {
         const checkboxes = document.querySelectorAll('.event-checkbox:checked');
@@ -615,49 +613,11 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('totalAmount').textContent = '₹' + totalAmount;
     }
 
-    // Attach checkbox listener
     document.querySelectorAll('.event-checkbox').forEach(cb => {
         cb.addEventListener('change', calculatePrice);
     });
 
-    // Initial call
     calculatePrice();
-
-
-    // ---------------- RADIO & CHECKBOX UI STYLE ----------------
-
-    document.querySelectorAll('.radio-option, .checkbox-option').forEach(option => {
-        const input = option.querySelector('input[type="radio"], input[type="checkbox"]');
-
-        option.addEventListener('click', function(e) {
-            if (e.target.tagName !== 'INPUT') {
-                input.click();
-            }
-        });
-
-        input.addEventListener('change', function() {
-
-            if (this.type === 'radio') {
-                document.querySelectorAll(`input[name="${this.name}"]`).forEach(radio => {
-                    radio.closest('.radio-option')?.classList.remove('selected');
-                });
-            }
-
-            if (this.checked) {
-                option.classList.add('selected');
-            } else {
-                option.classList.remove('selected');
-            }
-
-            // Recalculate when checkbox changes
-            if (this.classList.contains('event-checkbox')) {
-                calculatePrice();
-            }
-        });
-    });
-
-
-    // ---------------- FORM SUBMIT ----------------
 
     document.getElementById('registrationForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -675,34 +635,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         data.payment_amount = document.getElementById('totalAmount').textContent;
 
-        const fileInput = document.querySelector('input[name="payment_screenshot"]');
-        const file = fileInput.files[0];
-
-        if (file && file.size > 10 * 1024 * 1024) {
-            alert("File size must be under 10 MB");
-            return;
-        }
-
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function () {
-                const base64 = reader.result.split(",")[1];
-
-                data.payment_screenshot = base64;
-                data.filename = file.name;
-                data.filetype = file.type;
-
-                sendData(data);
-            };
-            reader.readAsDataURL(file);
-        } else {
-            sendData(data);
-        }
-    });
-
-
-    function sendData(data) {
-        fetch("https://script.google.com/macros/s/AKfycbxZ2N6vWCDk-p1lx5Q_oS3BIabLG6x6xEBucRBO5EftYFshlgcuk-p_C2P5XU5ZycfRxw/exec", {
+        fetch("https://script.google.com/macros/s/AKfycby9ClrssKIWRhDBEQ41DoeKfccGIpWtaCgMLgRhSJtBU-0yGXRQiemNEP6FMzE79BM/exec", {
             method: "POST",
             mode: "no-cors",
             headers: {
@@ -713,14 +646,15 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(() => {
             alert("Registration submitted successfully");
             document.getElementById("registrationForm").reset();
-            calculatePrice(); // reset amount display
+            calculatePrice();
         })
         .catch(error => console.error(error));
-    }
+    });
 
 });
 
 </script>
+
 
 </body>
 </html>
