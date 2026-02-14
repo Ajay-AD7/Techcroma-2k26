@@ -638,67 +638,55 @@ document.addEventListener("DOMContentLoaded", function () {
     // ---------------- FORM SUBMIT ----------------
 
     form.addEventListener('submit', function(e) {
-        e.preventDefault();
+    e.preventDefault();
 
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Submitting...";
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
 
-        messageBox.style.display = "none";
+    messageBox.style.display = "none";
 
-        const formData = new FormData(form);
-        const data = {};
+    const formData = new FormData(form);
+    const data = {};
 
-        formData.forEach((value, key) => {
-            if (data[key]) {
-                data[key] += ", " + value;
-            } else {
-                data[key] = value;
-            }
-        });
-
-        data.payment_amount = document.getElementById('totalAmount').textContent;
-
-        fetch("https://script.google.com/macros/s/AKfycby9ClrssKIWRhDBEQ41DoeKfccGIpWtaCgMLgRhSJtBU-0yGXRQiemNEP6FMzE79BM/exec", {
-            method: "POST",
-            mode: "no-cors",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: new URLSearchParams(data)
-        })
-        .then(() => {
-
-            messageBox.style.display = "block";
-            messageBox.style.background = "#d4edda";
-            messageBox.style.color = "#155724";
-            messageBox.style.border = "1px solid #c3e6cb";
-            messageBox.innerHTML = "✓ Registration submitted successfully!";
-
-            form.reset();
-            calculatePrice();
-
-            submitBtn.disabled = false;
-            submitBtn.textContent = "Submit Registration";
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        })
-        .catch(error => {
-
-            messageBox.style.display = "block";
-            messageBox.style.background = "#f8d7da";
-            messageBox.style.color = "#721c24";
-            messageBox.style.border = "1px solid #f5c6cb";
-            messageBox.innerHTML = "⚠ Submission failed. Please try again.";
-
-            submitBtn.disabled = false;
-            submitBtn.textContent = "Submit Registration";
-
-            console.error(error);
-        });
-
+    formData.forEach((value, key) => {
+        if (data[key]) {
+            data[key] += ", " + value;
+        } else {
+            data[key] = value;
+        }
     });
 
+    data.payment_amount = document.getElementById('totalAmount').textContent;
+
+    fetch("https://script.google.com/macros/s/AKfycby9ClrssKIWRhDBEQ41DoeKfccGIpWtaCgMLgRhSJtBU-0yGXRQiemNEP6FMzE79BM/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams(data)
+    });
+
+    // Force 2–3 second delay for better UX
+    setTimeout(() => {
+
+        messageBox.style.display = "block";
+        messageBox.style.background = "#d4edda";
+        messageBox.style.color = "#155724";
+        messageBox.style.border = "1px solid #c3e6cb";
+        messageBox.innerHTML = "✓ Registration Successful!";
+
+        form.reset();
+        calculatePrice();
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit Registration";
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    }, 2500); // 2.5 seconds delay
 });
+
 
 </script>
 
