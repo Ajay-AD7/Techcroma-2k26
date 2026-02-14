@@ -648,51 +648,65 @@
         });
 
         // Form submission handler
-        document.getElementById('registrationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Validate at least one event is selected
-            const events = document.querySelectorAll('input[name="events"]:checked');
-            if (events.length === 0) {
-                alert('Please select at least one event from Tech and Fun Zone');
-                return;
-            }
+       document.getElementById('registrationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-            // Collect form data
-            const formData = new FormData(this);
-            const data = {};
-            
-            // Handle regular fields
-            for (let [key, value] of formData.entries()) {
-                if (key === 'events') {
-                    if (!data[key]) data[key] = [];
-                    data[key].push(value);
-                } else {
-                    data[key] = value;
-                }
-            }
-            
-            // Add payment amount to data
-            const totalAmount = document.getElementById('totalAmount').textContent;
-            data.payment_amount = totalAmount;
+    const form = this;
+    const formData = new FormData(form);
+    const data = {};
 
-            // Display success message
-            document.getElementById('successMessage').classList.add('show');
-            
-            // Log the data (in a real application, this would be sent to a server)
-            fetch("https://script.google.com/macros/s/AKfycbxZ2N6vWCDk-p1lx5Q_oS3BIabLG6x6xEBucRBO5EftYFshlgcuk-p_C2P5XU5ZycfRxw/exec", {
-    method: "POST",
-    mode: "no-cors",
-    headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body: new URLSearchParams(data)
-})
-.then(() => {
-    console.log("Submitted successfully");
-})
-.catch(error => console.error("Error:", error));
+    formData.forEach((value, key) => {
+        if (data[key]) {
+            data[key] += ", " + value;
+        } else {
+            data[key] = value;
+        }
+    });
 
+    // Add payment amount
+    data.payment_amount = document.getElementById('totalAmount').textContent;
+
+    // Handle file upload
+    const fileInput = document.querySelector('input[name="payment_screenshot"]');
+    const file = fileInput.files[0];
+
+    if (file && file.size > 10 * 1024 * 1024) {
+        alert("File size must be under 10 MB");
+        return;
+    }
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            const base64 = reader.result.split(",")[1];
+
+            data.payment_screenshot = base64;
+            data.filename = file.name;
+            data.filetype = file.type;
+
+            sendData(data);
+        };
+        reader.readAsDataURL(file);
+    } else {
+        sendData(data);
+    }
+});
+
+function sendData(data) {
+    fetch("https://script.google.com/macros/s/AKfycbxZ2N6vWCDk-p1lx5Q_oS3BIabLG6x6xEBucRBO5EftYFshlgcuk-p_C2P5XU5ZycfRxw/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams(data)
+    })
+    .then(() => {
+        alert("Registration submitted successfully");
+        document.getElementById("registrationForm").reset();
+    })
+    .catch(error => console.error(error));
+}
 
 
             
