@@ -584,8 +584,10 @@
     </div>
 
     <script>
-        // Price calculation function
-        document.addEventListener("DOMContentLoaded", function () {
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // ---------------- PRICE CALCULATION ----------------
 
     function calculatePrice() {
         const checkboxes = document.querySelectorAll('.event-checkbox:checked');
@@ -597,14 +599,15 @@
         if (count === 0) {
             breakdown = 'Select at least one event';
             totalAmount = 0;
-        } else if (count === 1) {
+        } 
+        else if (count === 1) {
             breakdown = '₹200 (1st event)';
             totalAmount = 200;
-        } else {
-            const additionalEvents = count - 1;
-            const additionalAmount = additionalEvents * 100;
-            breakdown = `₹200 + ₹${additionalAmount}`;
-            totalAmount = 200 + additionalAmount;
+        } 
+        else {
+            const additional = (count - 1) * 100;
+            breakdown = `₹200 + ₹${additional}`;
+            totalAmount = 200 + additional;
         }
 
         document.getElementById('eventCount').textContent = count;
@@ -612,115 +615,112 @@
         document.getElementById('totalAmount').textContent = '₹' + totalAmount;
     }
 
+    // Attach checkbox listener
     document.querySelectorAll('.event-checkbox').forEach(cb => {
         cb.addEventListener('change', calculatePrice);
     });
 
+    // Initial call
     calculatePrice();
-});
 
-        // Initial calculation
 
-        // Add interactivity for radio and checkbox selections
-        document.querySelectorAll('.radio-option, .checkbox-option').forEach(option => {
-            const input = option.querySelector('input[type="radio"], input[type="checkbox"]');
-            
-            option.addEventListener('click', function(e) {
-                if (e.target.tagName !== 'INPUT') {
-                    input.click();
-                }
-            });
+    // ---------------- RADIO & CHECKBOX UI STYLE ----------------
 
-            input.addEventListener('change', function() {
-                if (this.type === 'radio') {
-                    // Remove selected class from all radio options in the same group
-                    document.querySelectorAll(`input[name="${this.name}"]`).forEach(radio => {
-                        radio.closest('.radio-option').classList.remove('selected');
-                    });
-                }
-                
-                if (this.checked) {
-                    option.classList.add('selected');
-                } else {
-                    option.classList.remove('selected');
-                }
-            });
+    document.querySelectorAll('.radio-option, .checkbox-option').forEach(option => {
+        const input = option.querySelector('input[type="radio"], input[type="checkbox"]');
+
+        option.addEventListener('click', function(e) {
+            if (e.target.tagName !== 'INPUT') {
+                input.click();
+            }
         });
 
-        // Form submission handler
-       document.getElementById('registrationForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+        input.addEventListener('change', function() {
 
-    const form = this;
-    const formData = new FormData(form);
-    const data = {};
+            if (this.type === 'radio') {
+                document.querySelectorAll(`input[name="${this.name}"]`).forEach(radio => {
+                    radio.closest('.radio-option')?.classList.remove('selected');
+                });
+            }
 
-    formData.forEach((value, key) => {
-        if (data[key]) {
-            data[key] += ", " + value;
+            if (this.checked) {
+                option.classList.add('selected');
+            } else {
+                option.classList.remove('selected');
+            }
+
+            // Recalculate when checkbox changes
+            if (this.classList.contains('event-checkbox')) {
+                calculatePrice();
+            }
+        });
+    });
+
+
+    // ---------------- FORM SUBMIT ----------------
+
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const data = {};
+
+        formData.forEach((value, key) => {
+            if (data[key]) {
+                data[key] += ", " + value;
+            } else {
+                data[key] = value;
+            }
+        });
+
+        data.payment_amount = document.getElementById('totalAmount').textContent;
+
+        const fileInput = document.querySelector('input[name="payment_screenshot"]');
+        const file = fileInput.files[0];
+
+        if (file && file.size > 10 * 1024 * 1024) {
+            alert("File size must be under 10 MB");
+            return;
+        }
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const base64 = reader.result.split(",")[1];
+
+                data.payment_screenshot = base64;
+                data.filename = file.name;
+                data.filetype = file.type;
+
+                sendData(data);
+            };
+            reader.readAsDataURL(file);
         } else {
-            data[key] = value;
+            sendData(data);
         }
     });
 
-    // Add payment amount
-    data.payment_amount = document.getElementById('totalAmount').textContent;
 
-    // Handle file upload
-    const fileInput = document.querySelector('input[name="payment_screenshot"]');
-    const file = fileInput.files[0];
-
-    if (file && file.size > 10 * 1024 * 1024) {
-        alert("File size must be under 10 MB");
-        return;
+    function sendData(data) {
+        fetch("https://script.google.com/macros/s/AKfycbxZ2N6vWCDk-p1lx5Q_oS3BIabLG6x6xEBucRBO5EftYFshlgcuk-p_C2P5XU5ZycfRxw/exec", {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: new URLSearchParams(data)
+        })
+        .then(() => {
+            alert("Registration submitted successfully");
+            document.getElementById("registrationForm").reset();
+            calculatePrice(); // reset amount display
+        })
+        .catch(error => console.error(error));
     }
 
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function () {
-            const base64 = reader.result.split(",")[1];
-
-            data.payment_screenshot = base64;
-            data.filename = file.name;
-            data.filetype = file.type;
-
-            sendData(data);
-        };
-        reader.readAsDataURL(file);
-    } else {
-        sendData(data);
-    }
 });
 
-function sendData(data) {
-    fetch("https://script.google.com/macros/s/AKfycbxZ2N6vWCDk-p1lx5Q_oS3BIabLG6x6xEBucRBO5EftYFshlgcuk-p_C2P5XU5ZycfRxw/exec", {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: new URLSearchParams(data)
-    })
-    .then(() => {
-        alert("Registration submitted successfully");
-        document.getElementById("registrationForm").reset();
-    })
-    .catch(error => console.error(error));
-}
+</script>
 
-
-            
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-            // Optional: Reset form after submission
-            setTimeout(() => {
-                this.reset();
-                document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
-                document.getElementById('successMessage').classList.remove('show');
-                calculatePrice(); // Reset price display
-            }, 3000);
-        });
-    </script>
 </body>
 </html>
