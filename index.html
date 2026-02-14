@@ -667,9 +667,15 @@ document.addEventListener("DOMContentLoaded", function () {
         body: new URLSearchParams(data)
     });
 
-    // Force 2–3 second delay for better UX
     setTimeout(() => {
 
+        // Scroll to top FIRST
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+
+        // Then show success message
         messageBox.style.display = "block";
         messageBox.style.background = "#d4edda";
         messageBox.style.color = "#155724";
@@ -681,8 +687,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         submitBtn.disabled = false;
         submitBtn.textContent = "Submit Registration";
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
 
     }, 2500); // 2.5 seconds delay
 });
