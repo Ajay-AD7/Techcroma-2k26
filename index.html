@@ -602,37 +602,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ---------------- PRICE CALCULATION ----------------
 
-    function calculatePrice() {
-        const checkboxes = document.querySelectorAll('.event-checkbox:checked');
-        const count = checkboxes.length;
+    // ---------------- PRICE CALCULATION ----------------
 
-        let totalAmount = 0;
-        let breakdown = '';
+function calculatePrice() {
+    const checkboxes = document.querySelectorAll('.event-checkbox');
+    let count = 0;
 
-        if (count === 0) {
-            breakdown = 'Select at least one event';
-            totalAmount = 0;
-        } 
-        else if (count === 1) {
-            breakdown = '₹200 (1st event)';
-            totalAmount = 200;
-        } 
-        else {
-            const additional = (count - 1) * 100;
-            breakdown = `₹200 + ₹${additional}`;
-            totalAmount = 200 + additional;
-        }
-
-        document.getElementById('eventCount').textContent = count;
-        document.getElementById('priceBreakdown').textContent = breakdown;
-        document.getElementById('totalAmount').textContent = '₹' + totalAmount;
-    }
-
-    document.querySelectorAll('.event-checkbox').forEach(cb => {
-        cb.addEventListener('change', calculatePrice);
+    checkboxes.forEach(cb => {
+        if (cb.checked) count++;
     });
 
-    calculatePrice();
+    let totalAmount = 0;
+    let breakdown = '';
+
+    if (count === 0) {
+        breakdown = 'Select at least one event';
+        totalAmount = 0;
+    } 
+    else if (count === 1) {
+        breakdown = '₹200 (1st event)';
+        totalAmount = 200;
+    } 
+    else {
+        const additional = (count - 1) * 100;
+        breakdown = `₹200 + ₹${additional}`;
+        totalAmount = 200 + additional;
+    }
+
+    document.getElementById('eventCount').textContent = count;
+    document.getElementById('priceBreakdown').textContent = breakdown;
+    document.getElementById('totalAmount').textContent = '₹' + totalAmount;
+}
+
+// Attach change listener properly
+document.querySelectorAll('.event-checkbox').forEach(cb => {
+    cb.addEventListener('change', function() {
+        calculatePrice();
+    });
+});
+
+// Initial calculation on page load
+calculatePrice();
 
 
     // ---------------- FORM SUBMIT ----------------
