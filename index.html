@@ -636,19 +636,18 @@ document.addEventListener("DOMContentLoaded", function () {
         data.payment_amount = document.getElementById('totalAmount').textContent;
 
         fetch("https://script.google.com/macros/s/AKfycby9ClrssKIWRhDBEQ41DoeKfccGIpWtaCgMLgRhSJtBU-0yGXRQiemNEP6FMzE79BM/exec", {
-            method: "POST",
-            mode: "no-cors",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: new URLSearchParams(data)
-        })
-        .then(() => {
-            alert("Registration submitted successfully");
-            document.getElementById("registrationForm").reset();
-            calculatePrice();
-        })
-        .catch(error => console.error(error));
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: new URLSearchParams(data)
+})
+.then(() => {
+    console.log("Submitted successfully");
+})
+.catch(error => console.error("Error:", error));
+
     });
 
 });
