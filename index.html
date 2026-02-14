@@ -409,6 +409,15 @@
         Registration Fee Includes Lunch
     </div>
 </div>
+            <div id="formMessage" style="
+    display:none;
+    padding:15px;
+    margin-bottom:20px;
+    border-radius:8px;
+    font-weight:600;
+    text-align:center;">
+</div>
+
 
             <form id="registrationForm">
                 <div class="form-group">
@@ -587,6 +596,12 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
+    const form = document.getElementById('registrationForm');
+    const messageBox = document.getElementById('formMessage');
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    // ---------------- PRICE CALCULATION ----------------
+
     function calculatePrice() {
         const checkboxes = document.querySelectorAll('.event-checkbox:checked');
         const count = checkboxes.length;
@@ -619,10 +634,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     calculatePrice();
 
-    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+
+    // ---------------- FORM SUBMIT ----------------
+
+    form.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        const formData = new FormData(this);
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submitting...";
+
+        messageBox.style.display = "none";
+
+        const formData = new FormData(form);
         const data = {};
 
         formData.forEach((value, key) => {
@@ -636,23 +659,49 @@ document.addEventListener("DOMContentLoaded", function () {
         data.payment_amount = document.getElementById('totalAmount').textContent;
 
         fetch("https://script.google.com/macros/s/AKfycby9ClrssKIWRhDBEQ41DoeKfccGIpWtaCgMLgRhSJtBU-0yGXRQiemNEP6FMzE79BM/exec", {
-    method: "POST",
-    mode: "no-cors",
-    headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body: new URLSearchParams(data)
-})
-.then(() => {
-    console.log("Submitted successfully");
-})
-.catch(error => console.error("Error:", error));
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: new URLSearchParams(data)
+        })
+        .then(() => {
+
+            messageBox.style.display = "block";
+            messageBox.style.background = "#d4edda";
+            messageBox.style.color = "#155724";
+            messageBox.style.border = "1px solid #c3e6cb";
+            messageBox.innerHTML = "✓ Registration submitted successfully!";
+
+            form.reset();
+            calculatePrice();
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Submit Registration";
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        })
+        .catch(error => {
+
+            messageBox.style.display = "block";
+            messageBox.style.background = "#f8d7da";
+            messageBox.style.color = "#721c24";
+            messageBox.style.border = "1px solid #f5c6cb";
+            messageBox.innerHTML = "⚠ Submission failed. Please try again.";
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Submit Registration";
+
+            console.error(error);
+        });
 
     });
 
 });
 
 </script>
+
 
 
 </body>
